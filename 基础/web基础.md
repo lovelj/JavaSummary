@@ -1,0 +1,1 @@
+4.session和cookie的区别和联系，session的生命周期，多个服务部署时session管理。
