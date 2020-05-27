@@ -136,4 +136,32 @@ public class arraydemo {
         return closestv;
     }
 
+    /**
+     *18. 四数之和
+     * @param nums
+     * @param target
+     * @return
+     */
+//    public List<List<Integer>> fourSum(int[] nums, int target) {
+//
+//    }
+
+    /**
+     *26. 删除排序数组中的重复项
+     * @param nums
+     * @return
+     */
+    public int removeDuplicates(int[] nums) {
+        if(nums.length<1) return 0;
+        int i=0;
+        for(int j=1;j<nums.length;j++){
+            if(nums[i]!=nums[j]){
+                i++;
+                nums[i]=nums[j];
+            }
+
+        }
+        return i+1;
+
+    }
 }
