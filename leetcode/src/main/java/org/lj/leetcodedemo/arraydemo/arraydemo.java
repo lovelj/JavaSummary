@@ -226,4 +226,39 @@ public class arraydemo {
         return -1;
     }
 
+    /**
+     * 34. 在排序数组中查找元素的第一个和最后一个位置
+     * @param nums
+     * @param target
+     * @return
+     */
+    public int[] searchRange(int[] nums, int target) {
+        if(nums.length<1){
+            return new int[]{-1,-1};
+        }
+        int start = 0;
+        int end = nums.length-1;
+        int mid = start+(end-start)/2;
+        while (start<=end){
+            mid = start+(end-start)/2;
+            if(nums[mid] == target){
+                int lstartindex = mid-1;
+                int rendindex= mid+1;
+                while (rendindex<nums.length&&(nums[rendindex]==target)){
+                    rendindex++;
+                }
+                while (lstartindex>=0 && nums[lstartindex] ==target){
+                    lstartindex--;
+                }
+                return  new int[]{lstartindex+1,rendindex-1};
+            }else if(nums[mid]>target){
+                end=mid-1;
+            }else {
+                start=mid+1;
+            }
+        }
+
+        return new int[]{-1,-1};
+    }
+
 }
