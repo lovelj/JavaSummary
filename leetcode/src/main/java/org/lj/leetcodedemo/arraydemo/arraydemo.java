@@ -387,5 +387,33 @@ public class arraydemo {
         }
     }
 
+    /**
+     * 48. 旋转图像
+     * @param matrix
+     */
+    public void rotate(int[][] matrix) {
+        int len=matrix.length;
+        for(int i=0;i<len/2 +len %2 ;i++){
+            for(int j=0;j<len/2;j++){
+                int[] tmp = new int[4];
+                int row = i;
+                int col = j;
+                for (int k = 0; k < 4; k++) {
+                    tmp[k] = matrix[row][col];
+                    int x = row;
+                    row = col;
+                    col = len - 1 - x;
+                }
+                for (int k = 0; k < 4; k++) {
+                    matrix[row][col] = tmp[(k + 3) % 4];
+                    int x = row;
+                    row = col;
+                    col = len - 1 - x;
+                }
+            }
+        }
+    }
+
+
 
 }
