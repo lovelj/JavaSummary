@@ -452,6 +452,56 @@ public class arraydemo {
 //        return ans;
     }
 
+    /**
+     * 54. 螺旋矩阵 todo://
+     * @param matrix
+     * @return
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List ans = new ArrayList();
+        if (matrix.length == 0) return ans;
+        int R = matrix.length, C = matrix[0].length;
+        boolean[][] seen = new boolean[R][C];
+        int[] dr = {0, 1, 0, -1};
+        int[] dc = {1, 0, -1, 0};
+        int r = 0, c = 0, di = 0;
+        for (int i = 0; i < R * C; i++) {
+            ans.add(matrix[r][c]);
+            seen[r][c] = true;
+            int cr = r + dr[di];
+            int cc = c + dc[di];
+            if (0 <= cr && cr < R && 0 <= cc && cc < C && !seen[cr][cc]){
+                r = cr;
+                c = cc;
+            } else {
+                di = (di + 1) % 4;
+                r += dr[di];
+                c += dc[di];
+            }
+        }
+        return ans;
+    }
 
+    /**
+     * 55. 跳跃游戏
+     * @param nums
+     * @return
+     */
+    public boolean canJump(int[] nums) {
+        if(nums.length<1){
+            return false;
+        }
+        int maxcanjump=0;
+        for(int i=0;i<nums.length;i++){
+            if(i<=maxcanjump){
+                maxcanjump=Math.max(maxcanjump,i+nums[i]);
+            }
+            if (maxcanjump >= nums.length - 1) {
+                return true;
+            }
+        }
+        return false;
+
+    }
 
 }
