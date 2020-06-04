@@ -504,4 +504,29 @@ public class arraydemo {
 
     }
 
+    /**
+     *56. 合并区间
+     * @param intervals
+     * @return
+     */
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length == 0) return intervals;
+
+        Arrays.sort(intervals, Comparator.comparing(item -> item[0]));
+
+        int index=0;
+        for(int i=0;i<intervals.length;i++){
+            int[] interval = intervals[i];
+            int[] point =intervals[index];
+            if (interval[0] > point[1]) {
+                intervals[++index] = interval;
+            } else {
+                intervals[index][1] = Math.max(point[1], interval[1]);
+            }
+        }
+        return Arrays.copyOfRange(intervals, 0, index + 1);
+    }
+
+
+
 }
