@@ -13,4 +13,11 @@ public class arraydemoTest {
         demo.maxArea(input);
 
     }
+
+    @Test
+    public void combinationSum2(){
+        int input[] = {10,1,2,7,6,1,5};
+        arraydemo demo = new arraydemo();
+        demo.combinationSum2(input,8);
+    }
 }

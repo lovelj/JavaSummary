@@ -1,8 +1,6 @@
 package org.lj.leetcodedemo.arraydemo;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 public class arraydemo {
     /**
@@ -283,6 +281,326 @@ public class arraydemo {
 
         }
         return start;
+    }
+
+
+    /**
+     * 39. 组合总和
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        int len = candidates.length;
+
+        // 排序是为了提前终止搜索
+        Arrays.sort(candidates);
+
+        dfs2(candidates, len, target, 0, new ArrayDeque<>(), res);
+        return res;
+    }
+
+
+    private void dfs2(int[] candidates,int len,int dis,int begin,Deque<Integer> path,List<List<Integer>> res){
+        if(dis==0){
+            res.add(new ArrayList<>(path));
+        }
+        for(int i=begin;i<len;i++){
+            // 在数组有序的前提下，剪枝
+            if (dis - candidates[i] < 0) {
+                break;
+            }
+
+            path.add(candidates[i]);
+            dfs2(candidates, len, dis-candidates[i],i,path, res);
+            path.removeLast();
+        }
+
+    }
+
+    /**
+     * @param candidates 数组输入
+     * @param len        输入数组的长度，冗余变量
+     * @param residue    剩余数值
+     * @param begin      本轮搜索的起点下标
+     * @param path       从根结点到任意结点的路径
+     * @param res        结果集变量
+     */
+    private void dfs(int[] candidates,
+                     int len,
+                     int residue,
+                     int begin,
+                     Deque<Integer> path,
+                     List<List<Integer>> res) {
+        if (residue == 0) {
+            // 由于 path 全局只使用一份，到叶子结点的时候需要做一个拷贝
+            res.add(new ArrayList<>(path));
+            return;
+        }
+        for (int i = begin; i < len; i++) {
+
+            // 在数组有序的前提下，剪枝
+            if (residue - candidates[i] < 0) {
+                break;
+            }
+
+            path.addLast(candidates[i]);
+            dfs(candidates, len, residue - candidates[i], i, path, res);
+            path.removeLast();
+        }
+    }
+
+    /**
+     * 40. 组合总和 II
+     * @param candidates
+     * @param target
+     * @return
+     */
+    public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        List<List<Integer>> res = new ArrayList<>();
+        int len = candidates.length;
+
+        // 排序是为了提前终止搜索
+        Arrays.sort(candidates);
+        dfs22(candidates,len,0,target, new ArrayDeque<>(),res);
+        return res;
+    }
+
+    private void dfs22(int[] candidates,int len,int start,int diff,Deque<Integer> paths,List<List<Integer>> res){
+        if(diff==0){
+            res.add(new ArrayList<>(paths));
+            return;
+        }
+
+        for(int i=start;i<len;i++){
+            if(candidates[i]>diff){
+                break;
+            }
+
+            if(i>start && candidates[i]==candidates[i-1]){
+                continue;
+            }
+            paths.addLast(candidates[i]);
+            dfs22(candidates, len, i+1,diff - candidates[i], paths, res);
+            paths.removeLast();
+        }
+    }
+
+    /**
+     * 48. 旋转图像
+     * @param matrix
+     */
+    public void rotate(int[][] matrix) {
+        int len=matrix.length;
+        for(int i=0;i<len/2 +len %2 ;i++){
+            for(int j=0;j<len/2;j++){
+                int[] tmp = new int[4];
+                int row = i;
+                int col = j;
+                for (int k = 0; k < 4; k++) {
+                    tmp[k] = matrix[row][col];
+                    int x = row;
+                    row = col;
+                    col = len - 1 - x;
+                }
+                for (int k = 0; k < 4; k++) {
+                    matrix[row][col] = tmp[(k + 3) % 4];
+                    int x = row;
+                    row = col;
+                    col = len - 1 - x;
+                }
+            }
+        }
+    }
+
+    /**
+     * 53. 最大子序和
+     * @param nums
+     * @return
+     */
+    public int maxSubArray(int[] nums) {
+        int len = nums.length;
+        if(len<1){
+            return 0;
+        }
+        int[] dp=new int[len];
+        dp[0]=nums[0];
+        for(int i=1;i<len;i++){
+            if(dp[i-1]>=0){
+                dp[i]=dp[i-1]+nums[i];
+            }else{
+                dp[i]=nums[i];
+            }
+        }
+        int res =dp[0];
+        for(int i=1;i<len;i++){
+            res=Math.max(res,dp[i]);
+        }
+        return  res;
+
+//        int ans = nums[0];
+//        int sum = 0;
+//        for(int num: nums) {
+//            if(sum > 0) {
+//                sum += num;
+//            } else {
+//                sum = num;
+//            }
+//            ans = Math.max(ans, sum);
+//        }
+//        return ans;
+    }
+
+    /**
+     * 54. 螺旋矩阵 todo://
+     * @param matrix
+     * @return
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List ans = new ArrayList();
+        if (matrix.length == 0) return ans;
+        int R = matrix.length, C = matrix[0].length;
+        boolean[][] seen = new boolean[R][C];
+        int[] dr = {0, 1, 0, -1};
+        int[] dc = {1, 0, -1, 0};
+        int r = 0, c = 0, di = 0;
+        for (int i = 0; i < R * C; i++) {
+            ans.add(matrix[r][c]);
+            seen[r][c] = true;
+            int cr = r + dr[di];
+            int cc = c + dc[di];
+            if (0 <= cr && cr < R && 0 <= cc && cc < C && !seen[cr][cc]){
+                r = cr;
+                c = cc;
+            } else {
+                di = (di + 1) % 4;
+                r += dr[di];
+                c += dc[di];
+            }
+        }
+        return ans;
+    }
+
+    /**
+     * 55. 跳跃游戏
+     * @param nums
+     * @return
+     */
+    public boolean canJump(int[] nums) {
+        if(nums.length<1){
+            return false;
+        }
+        int maxcanjump=0;
+        for(int i=0;i<nums.length;i++){
+            if(i<=maxcanjump){
+                maxcanjump=Math.max(maxcanjump,i+nums[i]);
+            }
+            if (maxcanjump >= nums.length - 1) {
+                return true;
+            }
+        }
+        return false;
+
+    }
+
+    /**
+     *56. 合并区间
+     * @param intervals
+     * @return
+     */
+    public int[][] merge(int[][] intervals) {
+        if (intervals.length == 0) return intervals;
+
+        Arrays.sort(intervals, Comparator.comparing(item -> item[0]));
+
+        int index=0;
+        for(int i=0;i<intervals.length;i++){
+            int[] interval = intervals[i];
+            int[] point =intervals[index];
+            if (interval[0] > point[1]) {
+                intervals[++index] = interval;
+            } else {
+                intervals[index][1] = Math.max(point[1], interval[1]);
+            }
+        }
+        return Arrays.copyOfRange(intervals, 0, index + 1);
+    }
+
+    /**
+     * 62. 不同路径
+     * @param m
+     * @param n
+     * @return
+     */
+    public int uniquePaths(int m, int n) {
+        int[][] dp = new int[m][n];
+        for (int i = 0; i < n; i++) dp[0][i] = 1;
+        for (int i = 0; i < m; i++) dp[i][0] = 1;
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        return dp[m - 1][n - 1];
+    }
+
+    /**
+     *63. 不同路径 II
+     * @param obstacleGrid
+     * @return
+     */
+    public int uniquePathsWithObstacles(int[][] obstacleGrid) {
+        int row=obstacleGrid.length;
+        int col=obstacleGrid[0].length;
+
+        if (obstacleGrid[0][0] == 1) {
+            return 0;
+        }
+
+        obstacleGrid[0][0] = 1;
+        for (int i = 1; i < row; i++) {
+            obstacleGrid[i][0] = (obstacleGrid[i][0] == 0 && obstacleGrid[i - 1][0] == 1) ? 1 : 0;
+        }
+
+        for (int i = 1; i < col; i++) {
+            obstacleGrid[0][i] = (obstacleGrid[0][i] == 0 && obstacleGrid[0][i - 1] == 1) ? 1 : 0;
+        }
+
+        for (int i = 1; i < row; i++) {
+            for (int j = 1; j < col; j++) {
+                if (obstacleGrid[i][j] == 0) {
+                    obstacleGrid[i][j] = obstacleGrid[i - 1][j] + obstacleGrid[i][j - 1];
+                } else {
+                    obstacleGrid[i][j] = 0;
+                }
+            }
+        }
+
+        return obstacleGrid[row - 1][col - 1];
+    }
+
+    /**
+     * 64. 最小路径和
+     * @param grid
+     * @return
+     */
+    public int minPathSum(int[][] grid) {
+        int row=grid.length;
+        int col=grid[0].length;
+
+        int[][] dp = new int[row][col];
+        dp[0][0]= grid[0][0];
+
+        for (int i = 1; i < col; i++) dp[0][i] = grid[0][i]+dp[0][i-1];
+        for (int i = 1; i < row; i++) dp[i][0] = grid[i][0]+dp[i-1][0];
+        for (int i = 1; i < row; i++) {
+            for (int j = 1; j < col; j++) {
+                dp[i][j] = Math.min(dp[i - 1][j], dp[i][j - 1])+grid[i][j];
+            }
+        }
+
+        return dp[row-1][col-1];
     }
 
 }
