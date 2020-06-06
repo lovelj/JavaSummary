@@ -2,6 +2,9 @@ package org.lj.leetcodedemo.arraydemo;
 
 import java.util.*;
 
+/**
+ * 数组
+ */
 public class arraydemo {
     /**
      * 11. 盛最多水的容器
@@ -602,5 +605,42 @@ public class arraydemo {
 
         return dp[row-1][col-1];
     }
+
+    /**
+     * 74. 搜索二维矩阵
+     * @param matrix
+     * @param target
+     * @return
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        int row = matrix.length;
+        if(row<1){
+           return false;
+       }
+
+       int col = matrix[0].length;
+        if(col<1){
+            return false;
+        }
+       int targetrow=-1;
+       for(int i=0;i<row;i++){
+           if(matrix[i][col-1]>=target && matrix[i][0]<=target){
+               targetrow=i;
+               break;
+           }
+       }
+       if(targetrow<0){
+           return false;
+       }
+
+       for(int i=0;i<col;i++){
+           if(matrix[targetrow][i]==target){
+               return true;
+           }
+       }
+       return false;
+    }
+
+
 
 }
