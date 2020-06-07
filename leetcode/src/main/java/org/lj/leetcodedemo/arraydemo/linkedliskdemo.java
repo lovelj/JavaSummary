@@ -79,4 +79,67 @@ public class linkedliskdemo {
 
     }
 
+    /**
+     * 21. 合并两个有序链表
+     * @param l1
+     * @param l2
+     * @return
+     */
+    public ListNode mergeTwoLists(ListNode l1, ListNode l2) {
+        if(l1==null && l2==null){
+            return  null;
+        }
+        ListNode curnode_1 = l1;
+        ListNode curnode_2 = l2;
+
+        ListNode nlist=new ListNode(0);
+        ListNode curnode_nlist =nlist;
+        while(curnode_1!=null || curnode_2!=null){
+            if(curnode_1==null){
+                int curv=curnode_2.val;
+                curnode_nlist.next=new ListNode(curv);
+                curnode_nlist=curnode_nlist.next;
+                curnode_2=curnode_2.next;
+            }else if(curnode_2==null){
+                int curv=curnode_1.val;
+                curnode_nlist.next=new ListNode(curv);
+                curnode_nlist=curnode_nlist.next;
+                curnode_1=curnode_1.next;
+            }else {
+                int cur1=curnode_1.val;
+                int cur2=curnode_2.val;
+                if(cur1<=cur2){
+                    curnode_nlist.next=new ListNode(cur1);
+                    curnode_nlist=curnode_nlist.next;
+                    curnode_1=curnode_1.next;
+                }else {
+                    curnode_nlist.next=new ListNode(cur2);
+                    curnode_nlist=curnode_nlist.next;
+                    curnode_2=curnode_2.next;
+                }
+
+            }
+        }
+        return  nlist.next;
+    }
+
+    /**
+     * 24
+     * @param head
+     * @return
+     */
+    public ListNode swapPairs(ListNode head) {
+        if ((head == null) || (head.next == null)) {
+            return head;
+        }
+
+        ListNode firstNode = head;
+        ListNode secondNode = head.next;
+
+        firstNode.next  = swapPairs(secondNode.next);
+        secondNode.next = firstNode;
+
+        return secondNode;
+    }
+
 }
