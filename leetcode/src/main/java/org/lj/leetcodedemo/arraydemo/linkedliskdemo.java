@@ -175,6 +175,30 @@ public class linkedliskdemo {
      * @return
      */
     public ListNode deleteDuplicates2(ListNode head) {
+        if(head==null || head.next==null) {
+            return head;
+        }
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode a = dummy;
+        ListNode b = head;
 
+        while(b!=null && b.next!=null){
+            if(a.next.val!=b.next.val){
+                a=a.next;
+                b=b.next;
+            }
+            else{
+                while (b!=null && b.next!=null && a.next.val==b.next.val){
+                    b=b.next;
+                }
+                a.next=b.next;
+                b=b.next;
+            }
+        }
+
+
+
+        return dummy.next;
     }
 }
