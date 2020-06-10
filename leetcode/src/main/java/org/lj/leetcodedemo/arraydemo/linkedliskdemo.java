@@ -1,5 +1,6 @@
 package org.lj.leetcodedemo.arraydemo;
 
+
 /**
  * 链表
  */
@@ -148,8 +149,8 @@ public class linkedliskdemo {
      * @param k
      * @return
      */
-    public ListNode rotateRight(ListNode head, int k) {
-
+    public ListNode rotateRight(ListNode head, int k) throws NoSuchMethodException {
+        throw new NoSuchMethodException();
     }
 
     /**
