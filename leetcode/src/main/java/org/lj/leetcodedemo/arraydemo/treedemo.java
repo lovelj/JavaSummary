@@ -135,8 +135,52 @@ public class treedemo {
         }
     }
 
+    /**
+     *101. 对称二叉树
+     * @param root
+     * @return
+     */
+    public boolean isSymmetric(TreeNode root) {
+        return check(root, root);
+    }
+    public boolean check(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        return p.val == q.val && check(p.left, q.right) && check(p.right, q.left);
+    }
 
+    /**
+     * 100. 相同的树
+     * @param p
+     * @param q
+     * @return
+     */
+    public boolean isSameTree(TreeNode p, TreeNode q) {
+        return checksame(p,q);
+    }
 
+    public boolean checksame(TreeNode p, TreeNode q) {
+        if (p == null && q == null) {
+            return true;
+        }
+        if (p == null || q == null) {
+            return false;
+        }
+        return p.val == q.val && checksame(p.left, q.left) && checksame(p.right, q.right);
+    }
 
+    /**
+     * 105. 从前序与中序遍历序列构造二叉树
+     * @param preorder
+     * @param inorder
+     * @return
+     */
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+
+    }
 
 }
