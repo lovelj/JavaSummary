@@ -225,4 +225,100 @@ public class treedemo {
         }
         return G[n];
     }
+    public boolean helper(TreeNode node, Integer lower, Integer upper) {
+        if (node == null) return true;
+
+        int val = node.val;
+        if (lower != null && val <= lower) return false;
+        if (upper != null && val >= upper) return false;
+
+        if (! helper(node.right, val, upper)) return false;
+        if (! helper(node.left, lower, val)) return false;
+        return true;
+    }
+
+    /**
+     *
+     * 是否合法二叉搜索树
+     * @param root
+     * @return
+     */
+    public boolean isValidBST(TreeNode root) {
+        return helper(root, null, null);
+    }
+
+    /**
+     * 103. 二叉树的锯齿形层次遍历
+     * @param root
+     * @return
+     */
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        if (root == null) {
+            return new ArrayList<List<Integer>>();
+        }
+
+        List<List<Integer>> results = new ArrayList<List<Integer>>();
+
+        // add the root element with a delimiter to kick off the BFS loop
+        LinkedList<TreeNode> node_queue = new LinkedList<TreeNode>();
+        node_queue.addLast(root);
+        node_queue.addLast(null);
+
+        LinkedList<Integer> level_list = new LinkedList<Integer>();
+        boolean is_order_left = true;
+
+        while (node_queue.size() > 0) {
+            TreeNode curr_node = node_queue.pollFirst();
+            if (curr_node != null) {
+                if (is_order_left)
+                    level_list.addLast(curr_node.val);
+                else
+                    level_list.addFirst(curr_node.val);
+
+                if (curr_node.left != null)
+                    node_queue.addLast(curr_node.left);
+                if (curr_node.right != null)
+                    node_queue.addLast(curr_node.right);
+
+            } else {
+                // we finish the scan of one level
+                results.add(level_list);
+                level_list = new LinkedList<Integer>();
+                // prepare for the next level
+                if (node_queue.size() > 0)
+                    node_queue.addLast(null);
+                is_order_left = !is_order_left;
+            }
+        }
+        return results;
+    }
+
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        List<List<Integer>> result = new ArrayList<>();
+        find(root, 1, result);
+        return result;
+    }
+
+    /**
+     * 如果当前的list 大小，小于目前的层级，需要增加一层，例如：当前遍历到第二层，list的大小还是1
+     *
+     * 关键在于 result.size() - level，
+     * 最下面的层级在list里面的下标肯定是0
+     * 那么当前层的下标则是list大小减去当前层（层级从1开始）。（如果从0开始，需要再减1）
+     *
+     * @param level 层级从1开始
+     */
+    private void find(TreeNode root, int level, List<List<Integer>> result) {
+        if (root == null) {
+            return;
+        }
+        if (level > result.size()) {
+            result.add(0, new ArrayList<>());
+        }
+        result.get(result.size() - level).add(root.val);
+        find(root.left, level + 1, result);
+        find(root.right, level + 1, result);
+    }
+
+
 }
